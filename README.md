@@ -3,11 +3,14 @@ Here are Dockerfiles to get you up and running with a fully functional deep lear
 
 If you are not familiar with Docker, but would still like an all-in-one solution, start here: [What is Docker?](#what-is-docker). If you know what Docker is, but are wondering why we need one for deep learning, [see this](#why-do-i-need-a-docker)
 
+## Update: I've built a quick tool, based on dl-docker, to run your DL project on the cloud with zero setup. You can start running your Tensorflow project on AWS in <30seconds using Floyd. See [www.floydhub.com](https://www.floydhub.com). It's free to try out. 
+### Happy to take feature requests/feedback and answer questions - mail me sai@floydhub.com.
+
 ## Specs
 This is what you get out of the box when you create a container with the provided image/Dockerfile:
 * Ubuntu 14.04
-* [CUDA 7.5](https://developer.nvidia.com/cuda-toolkit) (GPU version only)
-* [cuDNN v4](https://developer.nvidia.com/cudnn) (GPU version only)
+* [CUDA 8.0](https://developer.nvidia.com/cuda-toolkit) (GPU version only)
+* [cuDNN v5](https://developer.nvidia.com/cudnn) (GPU version only)
 * [Tensorflow](https://www.tensorflow.org/)
 * [Caffe](http://caffe.berkeleyvision.org/)
 * [Theano](http://deeplearning.net/software/theano/)
@@ -85,6 +88,14 @@ Note the use of `nvidia-docker` rather than just `docker`
 The container comes pre-installed with iPython and iTorch Notebooks, and you can use these to work with the deep learning frameworks. If you spin up the docker container with `docker-run -p <host-port>:<container-port>` (as shown above in the [instructions](#running-the-docker-image-as-a-container)), you will have access to these ports on your host and can access them at `http://127.0.0.1:<host-port>`. The default iPython notebook uses port 8888 and Tensorboard uses port 6006. Since we expose both these ports when we run the container, we can access them both from the localhost.
 
 However, you still need to start the Notebook inside the container to be able to access it from the host. You can either do this from the container terminal by executing `jupyter notebook` or you can pass this command in directly while spinning up your container using the `docker run -it -p 8888:8888 -p 6006:6006 floydhub/dl-docker:cpu jupyter notebook` CLI. The Jupyter Notebook has both Python (for TensorFlow, Caffe, Theano, Keras, Lasagne) and iTorch (for Torch) kernels.
+
+Note: If you are setting the notebook on Windows, you will need to first determine the IP address of your Docker container. This command on the Docker command-line provides the IP address
+```bash
+docker-machine ip default
+> <IP-address>
+```
+```default``` is the name of the container provided by default to the container you will spin. 
+On obtaining the IP-address, run the docker as per the [instructions](#running-the-docker-image-as-a-container) provided and start the Jupyter notebook as [described above](#jupyter-notebooks). Then accessing ```http://<IP-address>:<host-port>``` on your host's browser should show you the notebook.
 
 ### Data Sharing
 See [Docker container persistence](#docker-container-persistence). 
